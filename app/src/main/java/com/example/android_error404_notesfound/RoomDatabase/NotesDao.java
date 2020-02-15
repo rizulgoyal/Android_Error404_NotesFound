@@ -1,5 +1,6 @@
 package com.example.android_error404_notesfound.RoomDatabase;
 
+import androidx.annotation.StyleableRes;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -34,7 +35,10 @@ public interface NotesDao {
         @Query("Select * from notes")
         List<Notes> getDefault();
 
-//        @Query("Select * from employee where id = :id")
-//        LiveData<Employee> getCurrentUserDetails(Integer id);
+        @Query("Select * from notes where category = :category")
+        List<Notes> getcustomNotesDetails(String category);
+
+       @Query("Select * from notes where category = :category")
+        LiveData<List<Notes>> getLivecustomNotesDetails(String category);
     }
 

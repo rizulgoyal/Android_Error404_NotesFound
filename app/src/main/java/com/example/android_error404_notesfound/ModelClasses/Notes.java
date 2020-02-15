@@ -45,13 +45,20 @@ public class Notes implements Parcelable {
     private String description;
 
 
-    public Notes(Double lat, Double lng, String dateCreated, String title, String description) {
+
+    @SerializedName("category")
+    @Expose
+    private String category;
+
+
+    public Notes(Double lat, Double lng, String dateCreated, String title, String description, String category) {
         this.lat = lat;
         this.lng = lng;
         this.dateCreated = dateCreated;
         this.dateModified = "";
         this.title = title;
         this.description = description;
+        this.category = category;
     }
 
     protected Notes(Parcel in) {
@@ -74,6 +81,7 @@ public class Notes implements Parcelable {
         dateModified = in.readString();
         title = in.readString();
         description = in.readString();
+        category = in.readString();
     }
 
     public static final Creator<Notes> CREATOR = new Creator<Notes>() {
@@ -98,6 +106,14 @@ public class Notes implements Parcelable {
 
     public Double getLat() {
         return lat;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public void setLat(Double lat) {
@@ -173,5 +189,6 @@ public class Notes implements Parcelable {
         dest.writeString( dateModified );
         dest.writeString( title );
         dest.writeString( description );
+        dest.writeString( category );
     }
 }
