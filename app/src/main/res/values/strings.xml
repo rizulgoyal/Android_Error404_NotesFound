@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android_Error404_NotesFound</string>
+    <string name="enter_category_name">Enter Category Name</string>
+    <string name="please_enter_new_category">Please Enter new Category</string>
+</resources>
