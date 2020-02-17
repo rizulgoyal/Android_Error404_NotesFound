@@ -50,6 +50,17 @@ public class Notes implements Parcelable {
     @Expose
     private String category;
 
+    @SerializedName("audioPath")
+    @Expose
+    private String audioPath;
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
 
     public Notes(Double lat, Double lng, String dateCreated, String title, String description, String category) {
         this.lat = lat;

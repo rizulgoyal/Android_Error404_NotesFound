@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -56,6 +58,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
 
 
         holder.notes.setText(currNote.getTitle());
+
+        holder.mycardview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(currNote.getAudioPath() != null) {
+                    Toast.makeText(getContext(), currNote.getAudioPath().toString(), Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
 //        holder.mycardview.setOnClickListener(new View.OnClickListener() {
 //            @Override

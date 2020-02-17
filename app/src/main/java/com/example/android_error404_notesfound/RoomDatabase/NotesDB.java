@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 
-@Database(entities = Notes.class , exportSchema = false , version = 2)
+@Database(entities = Notes.class , exportSchema = false , version = 3)
 
 public abstract class NotesDB extends RoomDatabase {
 
