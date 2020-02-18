@@ -1,19 +1,31 @@
 package com.example.android_error404_notesfound.Activities;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +38,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,13 +51,16 @@ import java.util.Calendar;
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView title, desc;
-    Button buttonaddnote;
+    ImageButton buttonaddnote;
 
     //audio recording and playing
-    private Button play, stop, record;
+    private ImageButton play, record,addPic;
+    //Button stop;
     private MediaRecorder myAudioRecorder;
     private String outputFile,fileName,noteDate;
     private String audioPath = null;
+    private ImageView imageView;
+   Uri imagePath;
 
     private final int REQUEST_CODE = 1;
 
@@ -63,15 +80,20 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
         title = findViewById( R.id.titleNote );
         desc = findViewById( R.id.descriptionNote );
-        buttonaddnote = findViewById( R.id.button_save_note );
+        buttonaddnote = findViewById( R.id.delete );
         play = findViewById(R.id.play);
-        stop = findViewById(R.id.stop);
+        //stop = findViewById(R.id.stop);
         record = findViewById(R.id.record);
+        addPic = findViewById(R.id.addPic);
+
+        imageView = findViewById(R.id.imageView);
+        addPic.setOnClickListener(this);
+
         play.setOnClickListener(this);
-        stop.setOnClickListener(this);
+        //stop.setOnClickListener(this);
         record.setOnClickListener(this);
 
-        stop.setEnabled(false);
+        //stop.setEnabled(false);
         play.setEnabled(false);
 
         ///setupRecorder();
@@ -120,6 +142,11 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 Notes notes = new Notes( latitude, longitude, noteDate, titleString, descString , currCategory);
 
                     notes.setAudioPath(audioPath);
+                    if(imagePath!=null)
+                    {
+                        notes.setImagePath(imagePath.toString());
+                    }
+
 
 
                 NotesDB notesDB = NotesDB.getInstance( v.getContext() );
@@ -213,26 +240,53 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                     Log.d("mdiaplayer",ioe.toString());
                 }
                 record.setEnabled(false);
-                stop.setEnabled(true);
+                //stop.setEnabled(true);
                 Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+
+
+                final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
+                View sheetView = this.getLayoutInflater().inflate(R.layout.stop_recording, null);
+                mBottomSheetDialog.setContentView(sheetView);
+                mBottomSheetDialog.show();
+                 Button stop1 = sheetView.findViewById(R.id.stop);
+                stop1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(myAudioRecorder != null) {
+                            //myAudioRecorder.pause();
+                            myAudioRecorder.stop();
+                            //myAudioRecorder.reset();
+                            myAudioRecorder.release();
+                            myAudioRecorder = null;
+                            record.setEnabled(true);
+                            //stop.setEnabled(false);
+                            play.setEnabled(true);
+                            Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                            audioPath = outputFile;
+                            mBottomSheetDialog.dismiss();
+
+                        }
+
+                    }
+                });
                 break;
 
 
-            case R.id.stop:
-                if(myAudioRecorder != null) {
-                    //myAudioRecorder.pause();
-                    myAudioRecorder.stop();
-                    //myAudioRecorder.reset();
-                    myAudioRecorder.release();
-                    myAudioRecorder = null;
-                    record.setEnabled(true);
-                    stop.setEnabled(false);
-                    play.setEnabled(true);
-                    Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
-                    audioPath = outputFile;
-
-                }
-                break;
+//            case R.id.stop:
+//                if(myAudioRecorder != null) {
+//                    //myAudioRecorder.pause();
+//                    myAudioRecorder.stop();
+//                    //myAudioRecorder.reset();
+//                    myAudioRecorder.release();
+//                    myAudioRecorder = null;
+//                    record.setEnabled(true);
+//                    //stop.setEnabled(false);
+//                    play.setEnabled(true);
+//                    Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+//                    audioPath = outputFile;
+//
+//                }
+//                break;
 
             case R.id.play:
 
@@ -248,8 +302,84 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
 
+            case R.id.addPic:
+                selectImage(this);
+
 
         }
 
+    }
+
+    private void selectImage(Context context) {
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(pickPhoto , 1);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        imageView.setImageBitmap(selectedImage);
+                        imagePath = getImageUri(this,selectedImage);
+
+                    }
+
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
+
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
+                                imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                imagePath = getImageUri(this,BitmapFactory.decodeFile(picturePath));
+                                cursor.close();
+                            }
+                        }
+
+                    }
+                    break;
+            }
+        }
+    }
+    public Uri getImageUri(Context ctx, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage
+                (ctx.getContentResolver(),
+                        bitmap, "Temp", null);
+        return Uri.parse(path);
     }
 }

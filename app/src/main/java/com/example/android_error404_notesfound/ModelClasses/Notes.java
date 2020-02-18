@@ -50,28 +50,6 @@ public class Notes implements Parcelable {
     @Expose
     private String category;
 
-    @SerializedName("audioPath")
-    @Expose
-    private String audioPath;
-
-    public String getAudioPath() {
-        return audioPath;
-    }
-
-    public void setAudioPath(String audioPath) {
-        this.audioPath = audioPath;
-    }
-
-    public Notes(Double lat, Double lng, String dateCreated, String title, String description, String category) {
-        this.lat = lat;
-        this.lng = lng;
-        this.dateCreated = dateCreated;
-        this.dateModified = "";
-        this.title = title;
-        this.description = description;
-        this.category = category;
-    }
-
     protected Notes(Parcel in) {
         if (in.readByte() == 0) {
             id = null;
@@ -93,12 +71,14 @@ public class Notes implements Parcelable {
         title = in.readString();
         description = in.readString();
         category = in.readString();
+        audioPath = in.readString();
+        imagePath = in.readString();
     }
 
     public static final Creator<Notes> CREATOR = new Creator<Notes>() {
         @Override
         public Notes createFromParcel(Parcel in) {
-            return new Notes( in );
+            return new Notes(in);
         }
 
         @Override
@@ -106,6 +86,48 @@ public class Notes implements Parcelable {
             return new Notes[size];
         }
     };
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @SerializedName("audioPath")
+    @Expose
+    private String audioPath;
+
+    @SerializedName("imagePath")
+    @Expose
+    private String imagePath;
+
+
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+    public Notes(Double lat, Double lng, String dateCreated, String title, String description, String category) {
+        this.lat = lat;
+        this.lng = lng;
+        this.dateCreated = dateCreated;
+        this.dateModified = "";
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.imagePath = "";
+        this.audioPath ="";
+    }
+
+
+
+
 
     public Integer getId() {
         return id;
@@ -177,29 +199,34 @@ public class Notes implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel parcel, int i) {
+
         if (id == null) {
-            dest.writeByte( (byte) 0 );
+            parcel.writeByte((byte) 0);
         } else {
-            dest.writeByte( (byte) 1 );
-            dest.writeInt( id );
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(id);
         }
         if (lat == null) {
-            dest.writeByte( (byte) 0 );
+            parcel.writeByte((byte) 0);
         } else {
-            dest.writeByte( (byte) 1 );
-            dest.writeDouble( lat );
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(lat);
         }
         if (lng == null) {
-            dest.writeByte( (byte) 0 );
+            parcel.writeByte((byte) 0);
         } else {
-            dest.writeByte( (byte) 1 );
-            dest.writeDouble( lng );
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(lng);
         }
-        dest.writeString( dateCreated );
-        dest.writeString( dateModified );
-        dest.writeString( title );
-        dest.writeString( description );
-        dest.writeString( category );
+        parcel.writeString(dateCreated);
+        parcel.writeString(dateModified);
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeString(category);
+        parcel.writeString(audioPath);
+        parcel.writeString(imagePath);
     }
+
+
 }

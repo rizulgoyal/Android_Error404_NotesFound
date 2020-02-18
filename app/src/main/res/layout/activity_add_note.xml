@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,102 +8,177 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Title"
-        android:textColorHint="@color/colorPrimary"
-        android:id="@+id/titleNote"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimary"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        ></EditText>
-
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Description"
-        android:textColorHint="@color/colorPrimary"
-        android:id="@+id/descriptionNote"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-
-        android:textColor="@color/colorPrimary"
-        android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:inputType="textMultiLine"
-    android:minLines="1"
-        android:lines="6"
-        android:lineSpacingExtra="10dp"
-    android:maxLines="10">
-        ></EditText>
-
-
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="add note"
-            android:id="@+id/button_save_note"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/background_light"
-            android:background="@color/colorPrimary"
+            
+            android:layout_marginTop="30dp"
+            android:id="@+id/titleNote"
+            android:text="Title"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/quantum_grey"
+            />
 
-            ></Button>
-
-        <Button
+        <EditText
+            android:id="@+id/descriptionNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:background="@android:color/transparent"
+            android:text="Description"
             android:padding="10dp"
-            android:text="Start Recording"
-            android:id="@+id/record"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/background_light"
-            android:background="@color/colorPrimary"
+            android:textSize="15dp"
+            android:textColor="@color/quantum_grey"/>
 
-            ></Button>
-
-        <Button
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="Stop"
-            android:id="@+id/stop"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/background_light"
-            android:background="@color/colorPrimary"
+            android:id="@+id/imageView"
+            android:layout_gravity="bottom"
 
-            ></Button>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            android:text="Play"
-            android:id="@+id/play"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/background_light"
-            android:background="@color/colorPrimary"
+            />
 
-            ></Button>
-
-
+        </LinearLayout>
 
     </LinearLayout>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="100dp"
+        app:cardCornerRadius="15dp"
+        android:elevation="8dp"
+        android:background="@color/colorAccent"
+        android:id="@+id/playerView"
+
+        >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            >
+
+            <LinearLayout
+                android:layout_width="290dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:text="Voice 01"
+                android:textSize="20dp"
+                android:id="@+id/timer"
+                >
+
+
+
+            </TextView>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:id="@+id/removeAudioBtn"
+                android:src="@drawable/stop"
+                android:background="@android:color/transparent"
+                />
+                <ImageButton
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/playbutton"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/play"
+                    android:scaleType="fitXY"
+                    android:layout_gravity="top"
+                    />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
 
 
 
 
-</RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/voicerecording"
+        android:layout_gravity="bottom|left"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:id="@+id/record"
+        />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/camera"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/addPic"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/trash"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:id="@+id/delete"
+        />
+
+
+
+
+
+
+
+</FrameLayout>

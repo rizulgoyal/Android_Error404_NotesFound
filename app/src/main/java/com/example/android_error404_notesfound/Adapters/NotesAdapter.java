@@ -1,6 +1,7 @@
 package com.example.android_error404_notesfound.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_error404_notesfound.Activities.NoteDetail;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 
@@ -50,7 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
 
         final Notes currNote = notesList.get(position);
@@ -63,11 +65,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 if(currNote.getAudioPath() != null) {
-                    Toast.makeText(getContext(), currNote.getAudioPath().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), currNote.getAudioPath(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getContext(), NoteDetail.class);
+                    intent.putExtra("data",notesList.get(position));
+                    context.startActivity(intent);
                 }
                 else
                 {
                     Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), currNote.getImagePath().toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
