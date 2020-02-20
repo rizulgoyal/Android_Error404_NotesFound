@@ -4,6 +4,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -30,9 +34,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android_error404_notesfound.Adapters.NotesAdapter;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
+import com.example.android_error404_notesfound.SwipeToDeleteCallbackForNotes;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -47,6 +53,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -154,7 +161,11 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
                 notesDB.daoObjct().insert( notes );
 
+
                 finish();
+
+                //loadNotes();
+
 
 
 
@@ -166,6 +177,44 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
 
     }
+    private void loadNotes()
+    {
+        final NotesDB notesDB = NotesDB.getInstance( this );
+
+        final List<Notes> notesList = notesDB.daoObjct().getcustomNotesDetails( currCategory );
+
+
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerNotes);
+        final NotesAdapter notesAdapter = new NotesAdapter( this );
+        notesAdapter.setNotesList( notesList );
+        recyclerView.setAdapter(notesAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        notesAdapter.notifyDataSetChanged();
+
+
+
+
+        notesDB.daoObjct().getLivecustomNotesDetails(currCategory).observe( this, new Observer<List<Notes>>() {
+            @Override
+            public void onChanged(@Nullable List<Notes> notelist) {
+
+
+                notesAdapter.setNotesList(notesList);
+                notesAdapter.notifyDataSetChanged();
+
+            }
+        } );
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallbackForNotes(notesAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+    }
+
 
     private Boolean checkPermission()
     {

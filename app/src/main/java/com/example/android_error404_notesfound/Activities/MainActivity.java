@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.example.android_error404_notesfound.Adapters.CategoriesAdapter;
 import com.example.android_error404_notesfound.ModelClasses.ObjectSerializer;
 import com.example.android_error404_notesfound.R;
+import com.example.android_error404_notesfound.SwipeToDeleteCallbackForCategories;
+import com.example.android_error404_notesfound.SwipeToDeleteCallbackForNotes;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -91,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         categoriesAdapter.notifyDataSetChanged();
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallbackForCategories(categoriesAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
 
 

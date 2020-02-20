@@ -2,6 +2,7 @@ package com.example.android_error404_notesfound.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,19 +20,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_error404_notesfound.Activities.NotesActivity;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
+import com.example.android_error404_notesfound.ModelClasses.ObjectSerializer;
 import com.example.android_error404_notesfound.R;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder>{
 
-   List<String> categoriesList;
+   ArrayList<String> categoriesList;
    Context context;
+
+    private static final String SHARED_PREF = "categories";
+
+    private static final String KEY_NAME = "key";
+
+    SharedPreferences sharedPreferences;
+
+
 
     public CategoriesAdapter(Context context) {
         this.context = context;
@@ -41,7 +53,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         return categoriesList;
     }
 
-    public void setCategoriesList(List<String> categoriesList) {
+    public void setCategoriesList(ArrayList<String> categoriesList) {
         this.categoriesList = categoriesList;
     }
 
@@ -121,10 +133,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public void deleteItem(int position) {
 
         String category = categoriesList.get(position);
-//        Notes userDatabase = PlacesDB.getInstance(getContext());
-//        userDatabase.daoObjct().delete(places);
-//        Toast.makeText(getContext(),"Deleted",Toast.LENGTH_SHORT).show();
-//        placesList.remove(position);
+
+        sharedPreferences = context.getSharedPreferences( SHARED_PREF, MODE_PRIVATE );
+
+        sharedPreferences.edit().remove( KEY_NAME ).apply();
+        categoriesList.remove(position);
+        try {
+            sharedPreferences.edit().putString( KEY_NAME, ObjectSerializer.serialize( categoriesList ) ).apply();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getContext(),"Category Deleted",Toast.LENGTH_SHORT).show();
         notifyDataSetChanged();
 
     }

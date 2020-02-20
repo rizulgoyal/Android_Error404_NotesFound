@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.example.android_error404_notesfound.Adapters.NotesAdapter;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
+import com.example.android_error404_notesfound.SwipeToDeleteCallbackForNotes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +55,8 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadNotes();
+        //notesList.clear();
+        //loadNotes();
     }
 
     @Override
@@ -153,6 +156,11 @@ public class NotesActivity extends AppCompatActivity {
 
             }
         } );
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallbackForNotes(notesAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
     }
 

@@ -196,7 +196,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 mMap.clear();
                 linearLayoutText.setVisibility( View.GONE );
                 getDirection.setVisibility( View.VISIBLE );
-                setHomeMarker();
+
+                //adding home marker again
+                LatLng userLocation = new LatLng( latitude, longitude);
+                mMap.addMarker( new MarkerOptions().position( userLocation )
+                        .title( "Your Location" ));
                 getNoteLocation();
             }
         } );

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android_error404_notesfound.Activities.NoteDetail;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
+import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,6 @@ import java.util.List;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
    List<Notes> notesList;
-   List<Notes> filteredNotesList;
    Context context;
    private Filter filter;
 
@@ -145,10 +145,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     public void deleteItem(int position) {
 
         Notes notes = notesList.get(position);
-//        Notes userDatabase = PlacesDB.getInstance(getContext());
-//        userDatabase.daoObjct().delete(places);
-//        Toast.makeText(getContext(),"Deleted",Toast.LENGTH_SHORT).show();
-//        placesList.remove(position);
+        NotesDB userDatabase = NotesDB.getInstance(getContext());
+        userDatabase.daoObjct().delete(notes);
+        Toast.makeText(getContext(),"Deleted",Toast.LENGTH_SHORT).show();
+        notesList.remove(position);
         notifyDataSetChanged();
 
     }
