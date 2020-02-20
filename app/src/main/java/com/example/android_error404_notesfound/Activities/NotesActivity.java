@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,12 +62,14 @@ public class NotesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //notesList.clear();
-        //loadNotes();
+        loadNotes();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+        getSupportActionBar().hide();
         setContentView( R.layout.activity_notes );
 
         search = findViewById(R.id.editSearch );
@@ -155,7 +158,39 @@ public class NotesActivity extends AppCompatActivity {
 
         } );
 
-        loadNotes();
+        final NotesDB notesDB = NotesDB.getInstance( this );
+
+        notesList = notesDB.daoObjct().getcustomNotesDetails( currCategory );
+
+
+
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerNotes);
+        notesAdapter = new NotesAdapter(this);
+        notesDB.daoObjct().getLivecustomNotesDetails(currCategory).observe( this, new Observer<List<Notes>>() {
+            @Override
+            public void onChanged(@Nullable List<Notes> notelist) {
+
+                notesList = notelist;
+                notesAdapter.setNotesList(notesList);
+                notesAdapter.notifyDataSetChanged();
+
+            }
+        } );
+        notesAdapter.setNotesList( notesList );
+        recyclerView.setAdapter(notesAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        notesAdapter.notifyDataSetChanged();
+
+
+
+
+
+
+        ItemTouchHelper itemTouchHelper = new
+                ItemTouchHelper(new SwipeToDeleteCallbackForNotes(notesAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
 
 
@@ -197,15 +232,6 @@ public class NotesActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerNotes);
         notesAdapter = new NotesAdapter(this);
-        notesAdapter.setNotesList( notesList );
-        recyclerView.setAdapter(notesAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        notesAdapter.notifyDataSetChanged();
-
-
-
-
         notesDB.daoObjct().getLivecustomNotesDetails(currCategory).observe( this, new Observer<List<Notes>>() {
             @Override
             public void onChanged(@Nullable List<Notes> notelist) {
@@ -216,6 +242,16 @@ public class NotesActivity extends AppCompatActivity {
 
             }
         } );
+        notesAdapter.setNotesList( notesList );
+        recyclerView.setAdapter(notesAdapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        notesAdapter.notifyDataSetChanged();
+
+
+
+
+
 
         ItemTouchHelper itemTouchHelper = new
                 ItemTouchHelper(new SwipeToDeleteCallbackForNotes(notesAdapter));

@@ -3,6 +3,7 @@ package com.example.android_error404_notesfound.Activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,14 +24,17 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,13 +66,16 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     ImageButton buttonaddnote;
 
     //audio recording and playing
-    private ImageButton play, record,addPic;
+    private ImageButton play, record,addPic,removeAudio;
     //Button stop;
     private MediaRecorder myAudioRecorder;
     private String outputFile,fileName,noteDate;
     private String audioPath = null;
     private ImageView imageView;
    Uri imagePath;
+    SeekBar seekBar;
+
+    MediaPlayer mediaPlayer;
 
     private final int REQUEST_CODE = 1;
 
@@ -78,9 +85,13 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     LocationRequest locationRequest;
     String currCategory;
 
+    CardView playerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+        getSupportActionBar().hide();
         setContentView( R.layout.activity_add_note );
         requestPermission();
 
@@ -93,6 +104,9 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         //stop = findViewById(R.id.stop);
         record = findViewById(R.id.record);
         addPic = findViewById(R.id.addPic);
+        removeAudio = findViewById(R.id.removeAudioBtn);
+
+         seekBar = findViewById(R.id.seekBar);
 
         imageView = findViewById(R.id.imageView);
         addPic.setOnClickListener(this);
@@ -103,6 +117,44 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
         //stop.setEnabled(false);
         play.setEnabled(false);
+
+
+        playerView = findViewById(R.id.playerView);
+        playerView.setVisibility(View.GONE);
+
+        removeAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playerView.setVisibility(View.GONE);
+                audioPath = null;
+            }
+        });
+
+
+
+        //seekbar
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                if(mediaPlayer != null && fromUser){
+                    mediaPlayer.seekTo(progress * 1000);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+        });
+
+
 
         ///setupRecorder();
 
@@ -314,6 +366,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                             Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
                             audioPath = outputFile;
                             mBottomSheetDialog.dismiss();
+                            playerView.setVisibility(View.VISIBLE);
 
                         }
 
@@ -340,12 +393,27 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.play:
 
-                MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer = new MediaPlayer();
                 try {
                     Log.d("player",outputFile);
                     mediaPlayer.setDataSource(outputFile);
                     mediaPlayer.prepare();
+                    int duration = mediaPlayer.getDuration();
+                    seekBar.setMax(duration/1000);
                     mediaPlayer.start();
+                    final Handler mHandler = new Handler();
+//Make sure you update Seekbar on UI thread
+                    AddNoteActivity.this.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if(mediaPlayer != null){
+                                int mCurrentPosition = mediaPlayer.getCurrentPosition() / 1000;
+                                seekBar.setProgress(mCurrentPosition);
+                            }
+                            mHandler.postDelayed(this, 1000);
+                        }
+                    });
                     Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     // make something

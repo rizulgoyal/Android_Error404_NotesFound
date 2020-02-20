@@ -82,13 +82,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
 
-                    Toast.makeText(getContext(), currNote.getAudioPath(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), currNote.getAudioPath(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getContext(), NoteDetail.class);
                     intent.putExtra("data",notesList.get(position));
                     context.startActivity(intent);
 
                     Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
-                    Toast.makeText(getContext(), currNote.getImagePath().toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), currNote.getImagePath().toString(), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -144,11 +144,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public void deleteItem(int position) {
 
-        Notes notes = notesList.get(position);
         NotesDB userDatabase = NotesDB.getInstance(getContext());
+        notesList = userDatabase.daoObjct().getDefault();
+        Notes notes = notesList.get(position);
+
         userDatabase.daoObjct().delete(notes);
         Toast.makeText(getContext(),"Deleted",Toast.LENGTH_SHORT).show();
         notesList.remove(position);
+        //notifyItemChanged(position);
         notifyDataSetChanged();
 
     }

@@ -25,6 +25,7 @@ import com.example.android_error404_notesfound.R;
 
 
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -137,6 +138,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     public void deleteItem(int position) {
 
+
+
         String category = categoriesList.get(position);
         categoriesList.remove( category );
 
@@ -148,6 +151,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             e.printStackTrace();
         }
         Toast.makeText(getContext(),"Category Deleted",Toast.LENGTH_SHORT).show();
+        notifyItemChanged(position);
         notifyDataSetChanged();
 
     }
