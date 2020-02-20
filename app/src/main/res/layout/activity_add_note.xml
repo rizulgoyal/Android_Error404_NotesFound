@@ -159,9 +159,22 @@
         android:src="@drawable/camera"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="120dp"
         android:layout_marginBottom="10dp"
         android:id="@+id/addPic"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_action_map"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="120dp"
+        android:id="@+id/mapButton"
+        />
 
     <ImageButton
         android:layout_width="30dp"
