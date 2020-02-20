@@ -62,6 +62,8 @@
             android:hint="@string/enter_category_name"
             android:id="@+id/text_add_category"
             android:textColor="@color/colorPrimary"
+
+            android:focusable="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 
             ></EditText>

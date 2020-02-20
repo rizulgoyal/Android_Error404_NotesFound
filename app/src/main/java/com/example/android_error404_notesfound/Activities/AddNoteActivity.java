@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ import java.util.Calendar;
 
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView title, desc;
+    EditText title, desc;
     ImageButton buttonaddnote;
 
     //audio recording and playing

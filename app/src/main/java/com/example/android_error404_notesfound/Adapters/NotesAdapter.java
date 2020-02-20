@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +19,15 @@ import com.example.android_error404_notesfound.Activities.NoteDetail;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
    List<Notes> notesList;
+   List<Notes> filteredNotesList;
    Context context;
+   private Filter filter;
 
     public NotesAdapter(Context context) {
         this.context = context;
@@ -44,12 +49,24 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder>{
         this.context = context;
     }
 
+
+
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate( R.layout.notes_cell_layout,parent,false);
         return new ViewHolder(view);
     }
+
+
+    public void filterList(List<Notes> filteredList) {
+        notesList =  filteredList;
+        notifyDataSetChanged();
+    }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
