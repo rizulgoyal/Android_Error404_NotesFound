@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (names.isEmpty())
         {
-            names = new ArrayList<>( Arrays.asList( "Home", "Work" ) );
+            names = new ArrayList<>( Arrays.asList( "Home", "Work", "College" ) );
 //        sharedPreferences.edit().putStringSet( "array", new HashSet<String>( names ) ).apply();
 //
 //
@@ -132,22 +132,18 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
                             sharedPreferences.edit().putString(KEY_NAME, ObjectSerializer.serialize( names ) ).apply();
-                        } catch (IOException e) {
+                        }
+                        catch (IOException e)
+                        {
                             e.printStackTrace();
                         }
+
 
                         RecyclerView recyclerView = findViewById(R.id.recyclerCategories);
                         final CategoriesAdapter categoriesAdapter = new CategoriesAdapter(v.getContext());
                         categoriesAdapter.setCategoriesList( names );
                         recyclerView.setAdapter(categoriesAdapter);
-                        LinearLayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-                        recyclerView.setLayoutManager(layoutManager);
                         categoriesAdapter.notifyDataSetChanged();
-
-
-
-
-
 
                         alertDialog.dismiss();
 

@@ -6,5 +6,12 @@
 
     <string name="api_key">AIzaSyCGNZIaTG3Lj3gj5I6OrIvf9NZMQbz2oeU</string>
     <string name="api_key_class">AIzaSyD2ktEXAQnHpIkh5TqnJgqEaXwcs1olsmY</string>
+    <string name="please_select_one_option_to_proceed">Please Select one option to proceed</string>
 
+<array name="array_sorttypes">
+<item>Sort by Date</item>
+<item>Sort by Title</item>
+
+
+</array>
 </resources>

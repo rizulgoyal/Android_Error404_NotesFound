@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -20,11 +21,14 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android_error404_notesfound.Adapters.CategoriesAdapter;
@@ -33,6 +37,7 @@ import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
 import com.example.android_error404_notesfound.SwipeToDeleteCallbackForNotes;
+import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,16 +111,46 @@ public class NotesActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //Toast.makeText( getApplicationContext(),"asfszdfz",Toast.LENGTH_SHORT ).show();
-                Collections.sort( notesList, new Comparator<Notes>() {
+
+
+
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder( v.getContext() );
+                // builder.setTitle( "Edit Employee" );
+                LayoutInflater inflater1 = LayoutInflater.from( v.getContext() );
+
+                View v1 = inflater1.inflate( R.layout.select_sorttype_layout,null );
+                builder1.setView( v1 );
+                final AlertDialog alertDialog1 = builder1.create();
+                alertDialog1.show();
+                final Spinner spinnerSort = v1.findViewById( R.id.spinnerSortTypes );
+                Button buttonChangeSort = v1.findViewById( R.id.button_sortNotes );
+
+                buttonChangeSort.setOnClickListener( new View.OnClickListener() {
                     @Override
-                    public int compare(final Notes o1,final Notes o2) {
-                        Toast.makeText( getApplicationContext(),o1.getTitle()+o2.getTitle(),Toast.LENGTH_SHORT ).show();
-                        return o1.getTitle().compareTo( o2.getTitle() );
+                    public void onClick(View v) {
+
+                        String sortType = spinnerSort.getSelectedItem().toString();
+                        if (sortType.equalsIgnoreCase( "Sort by Date" ))
+                        {
+                            SortNotes( "date" );
+
+                        }
+                        else if (sortType.equalsIgnoreCase( "Sort by Title" ))
+                        {
+                            SortNotes( "title" );
+                        }
+
+
+                        alertDialog1.dismiss();
+
+
+
                     }
                 } );
-                //notesAdapter.setNotesList(notesList);
-                notesAdapter.notifyDataSetChanged();
+
+
+
             }
 
         } );
@@ -124,6 +159,31 @@ public class NotesActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void SortNotes(final String sortby)
+    {
+
+        //Toast.makeText( getApplicationContext(),"asfszdfz",Toast.LENGTH_SHORT ).show();
+        Collections.sort( notesList, new Comparator<Notes>() {
+            @Override
+            public int compare(final Notes o1,final Notes o2) {
+                //Toast.makeText( getApplicationContext(),o1.getTitle()+o2.getTitle(),Toast.LENGTH_SHORT ).show();
+               if(sortby.equalsIgnoreCase( "date" ))
+               {
+                   return o1.getDateCreated().compareTo( o2.getDateCreated() );
+
+               }
+               else if(sortby.equalsIgnoreCase( "title" ))
+               {
+                   return o1.getTitle().compareTo( o2.getTitle() );
+
+               }
+               return 0;
+            }
+        } );
+        //notesAdapter.setNotesList(notesList);
+        notesAdapter.notifyDataSetChanged();
     }
 
     private void loadNotes()

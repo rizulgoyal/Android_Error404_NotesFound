@@ -57,6 +57,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         this.categoriesList = categoriesList;
     }
 
+    public  void clearCategories()
+    {
+        categoriesList.clear();
+    }
+
     public Context getContext() {
         return context;
     }
@@ -133,11 +138,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public void deleteItem(int position) {
 
         String category = categoriesList.get(position);
+        categoriesList.remove( category );
 
         sharedPreferences = context.getSharedPreferences( SHARED_PREF, MODE_PRIVATE );
 
-        sharedPreferences.edit().remove( KEY_NAME ).apply();
-        categoriesList.remove(position);
         try {
             sharedPreferences.edit().putString( KEY_NAME, ObjectSerializer.serialize( categoriesList ) ).apply();
         } catch (IOException e) {
