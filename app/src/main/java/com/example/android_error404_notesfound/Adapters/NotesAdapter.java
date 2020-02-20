@@ -81,17 +81,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.mycardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(currNote.getAudioPath() != null) {
+
                     Toast.makeText(getContext(), currNote.getAudioPath(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getContext(), NoteDetail.class);
                     intent.putExtra("data",notesList.get(position));
                     context.startActivity(intent);
-                }
-                else
-                {
+
                     Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
                     Toast.makeText(getContext(), currNote.getImagePath().toString(), Toast.LENGTH_LONG).show();
-                }
+
             }
         });
 
@@ -127,6 +125,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         TextView notes;
         CardView mycardview;
+
 
 
         public ViewHolder(@NonNull View itemView) {

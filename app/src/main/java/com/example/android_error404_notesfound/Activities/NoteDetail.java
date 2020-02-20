@@ -67,6 +67,10 @@ public class NoteDetail extends AppCompatActivity {
             {
                 play.setVisibility(View.VISIBLE);
             }
+            else
+            {
+                play.setVisibility( View.GONE );
+            }
             if(notes.getImagePath()!=null)
             {
                 try {
