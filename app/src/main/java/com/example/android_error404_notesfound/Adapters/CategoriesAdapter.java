@@ -58,10 +58,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         this.categoriesList = categoriesList;
     }
 
-    public  void clearCategories()
-    {
-        categoriesList.clear();
-    }
+
 
     public Context getContext() {
         return context;
@@ -153,6 +150,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
         Toast.makeText(getContext(),"Category Deleted",Toast.LENGTH_SHORT).show();
         notifyItemChanged(position);
         notifyDataSetChanged();
+        notifyItemChanged( position );
 
     }
 }
