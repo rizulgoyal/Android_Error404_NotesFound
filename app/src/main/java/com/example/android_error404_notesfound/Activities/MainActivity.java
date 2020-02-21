@@ -2,11 +2,13 @@ package com.example.android_error404_notesfound.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -46,11 +48,13 @@ public class MainActivity extends AppCompatActivity {
 
     ImageButton addCategory;
     SharedPreferences sharedPreferences;
+    private final int REQUEST_CODE = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
+        requestPermission();
         requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
         getSupportActionBar().setTitle("Notes Found");
         getSupportActionBar().setSubtitle("Folders");
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (names.isEmpty())
         {
-            //names = new ArrayList<>( Arrays.asList( "Home", "Work", "College" ) );
+            names = new ArrayList<>( Arrays.asList( "Home", "Work", "College" ) );
 //        sharedPreferences.edit().putStringSet( "array", new HashSet<String>( names ) ).apply();
 //
 //
@@ -226,6 +230,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(categoriesAdapter);
         categoriesAdapter.notifyDataSetChanged();
 
+
+    }
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE );
 
     }
 }

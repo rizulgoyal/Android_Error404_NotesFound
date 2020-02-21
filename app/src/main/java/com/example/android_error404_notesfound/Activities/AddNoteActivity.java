@@ -362,7 +362,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 record.setEnabled(false);
                 //stop.setEnabled(true);
-                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 
 
                 final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
@@ -382,7 +382,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                             record.setEnabled(true);
                             //stop.setEnabled(false);
                             play.setEnabled(true);
-                            Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
                             audioPath = outputFile;
                             mBottomSheetDialog.dismiss();
                             playerView.setVisibility(View.VISIBLE);
@@ -433,7 +433,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                             mHandler.postDelayed(this, 1000);
                         }
                     });
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     // make something
                 }

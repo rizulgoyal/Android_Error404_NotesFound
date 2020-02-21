@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.SimpleDateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,10 @@ import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -99,6 +103,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
 
         holder.notes.setText(currNote.getTitle());
+        holder.desc.setText(currNote.getDescription());
+
+
+        holder.date.setText("Created On :" + currNote.getDateCreated().split(" ")[0]);
 
         holder.mycardview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +117,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                     intent.putExtra("data",notesList.get(position));
                     context.startActivity(intent);
 
-                    Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "No audio", Toast.LENGTH_LONG).show();
                     //Toast.makeText(getContext(), currNote.getImagePath().toString(), Toast.LENGTH_LONG).show();
 
             }
@@ -211,6 +219,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         TextView notes;
         CardView mycardview;
+        TextView desc,date;
 
 
 
@@ -222,6 +231,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
             mycardview = itemView.findViewById(R.id.newcardNote);
             notes = itemView.findViewById( R.id.textView1 );
+            desc = itemView.findViewById(R.id.descTv);
+            date = itemView.findViewById(R.id.dateTV);
 
 
 

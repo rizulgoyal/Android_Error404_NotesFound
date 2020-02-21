@@ -125,7 +125,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                  mediaPlayer = new MediaPlayer();
                 try {
                     //Log.d("player",notes.getAudioPath());
-                    Toast.makeText(getApplicationContext(),notes.getAudioPath(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),notes.getAudioPath(), Toast.LENGTH_SHORT).show();
                     if(notes.getAudioPath()!=null) {
                         mediaPlayer.setDataSource(notes.getAudioPath());
                     }
@@ -150,7 +150,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                             mHandler.postDelayed(this, 1000);
                         }
                     });
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     //Log.d("player",notes.getAudioPath());
                 }
@@ -239,7 +239,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                 NotesDB userDatabase = NotesDB.getInstance(v.getContext());
 
                 userDatabase.daoObjct().delete(notes);
-                Toast.makeText(v.getContext(),"Deleted",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(),"Deleted",Toast.LENGTH_SHORT).show();
 
                 //notifyItemChanged(position);
                 //RecyclerView recyclerView = findViewById(R.id.recyclerNotes);
@@ -276,7 +276,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
         notes.setImagePath(imagePath);
         NotesDB notesDB = NotesDB.getInstance(this);
         notesDB.daoObjct().update(notes);
-        Toast.makeText(this,"done",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"done",Toast.LENGTH_SHORT).show();
     }
 
     private void setupRecorder()
@@ -311,7 +311,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                     }
                     record.setEnabled(false);
                     //stop.setEnabled(true);
-                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 
 
                     final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
@@ -331,7 +331,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                                 record.setEnabled(true);
                                 //stop.setEnabled(false);
                                 //play.setEnabled(true);
-                                Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
                                 audioPath = notes.getAudioPath();
                                 mBottomSheetDialog.dismiss();
                                 playerView.setVisibility(View.VISIBLE);
@@ -356,7 +356,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                     }
                     record.setEnabled(false);
                     //stop.setEnabled(true);
-                    Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 
 
                     final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
@@ -376,7 +376,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
                                 record.setEnabled(true);
                                 //stop.setEnabled(false);
                                 //play.setEnabled(true);
-                                Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Audio Recorder successfully", Toast.LENGTH_LONG).show();
                                 audioPath = outputFile;
                                 mBottomSheetDialog.dismiss();
                                 playerView.setVisibility(View.VISIBLE);

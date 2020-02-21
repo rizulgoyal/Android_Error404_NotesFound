@@ -3,11 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dancer"
+        android:src="@drawable/recor" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/holo_red_dark"
         android:id="@+id/stop"
         android:text="Stop"
-        android:background="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:background="@android:color/white"
+        android:layout_margin="10dp"/>
 
 </LinearLayout>
