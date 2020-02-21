@@ -3,14 +3,9 @@ package com.example.android_error404_notesfound.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,25 +13,32 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_error404_notesfound.Activities.MainActivity;
 import com.example.android_error404_notesfound.Activities.NotesActivity;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.ModelClasses.ObjectSerializer;
 import com.example.android_error404_notesfound.R;
-
+import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
-public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder>{
+public class ChangeCategoriesAdapter extends RecyclerView.Adapter<ChangeCategoriesAdapter.ViewHolder>{
 
    ArrayList<String> categoriesList;
    Context context;
+   Notes noteToChange;
+
+    public Notes getNoteToChange() {
+        return noteToChange;
+    }
+
+    public void setNoteToChange(Notes noteToChange) {
+        this.noteToChange = noteToChange;
+    }
 
     private static final String SHARED_PREF = "categories";
 
@@ -46,7 +48,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
 
 
-    public CategoriesAdapter(Context context) {
+    public ChangeCategoriesAdapter(Context context) {
         this.context = context;
     }
 
@@ -89,11 +91,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
             @Override
             public void onClick(View view) {
 
-                Intent myintent = new Intent(context, NotesActivity.class);
-                myintent.putExtra("category", currCategory);
+                noteToChange.setCategory( currCategory );
+                NotesDB notesDB = NotesDB.getInstance( context );
+                notesDB.daoObjct().update( noteToChange );
+
+
+                Intent myintent = new Intent(context, MainActivity.class);
 
                 context.startActivity(myintent);
-                //  Toast.makeText(context,"position = "+position,Toast.LENGTH_LONG).show();
+                 // Toast.makeText(context,"position = "+position,Toast.LENGTH_LONG).show();
 
             }
         });

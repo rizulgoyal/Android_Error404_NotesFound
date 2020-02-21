@@ -1,33 +1,55 @@
 package com.example.android_error404_notesfound.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_error404_notesfound.Activities.NoteDetail;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
+import com.example.android_error404_notesfound.ModelClasses.ObjectSerializer;
 import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
    List<Notes> notesList;
    Context context;
    private Filter filter;
+
+    ArrayList<String> names;
+
+
+    private static final String SHARED_PREF = "categories";
+
+    private static final String KEY_NAME = "key";
+
+    SharedPreferences sharedPreferences;
+
+
+
 
     public NotesAdapter(Context context) {
         this.context = context;
@@ -92,6 +114,70 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
             }
         });
+
+        holder.mycardview.setOnLongClickListener( new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                AlertDialog.Builder builder1 = new AlertDialog.Builder( v.getContext() );
+                // builder.setTitle( "Edit Employee" );
+                LayoutInflater inflater1 = LayoutInflater.from( v.getContext() );
+
+                View v1 = inflater1.inflate( R.layout.change_folder_layout,null );
+                builder1.setView( v1 );
+                final AlertDialog alertDialog1 = builder1.create();
+                alertDialog1.show();
+
+              //  initialize recycler view
+
+
+                final RecyclerView recyclerViewChangeFolder = v1.findViewById( R.id.recyclerChangeFolder );
+
+                sharedPreferences = context.getSharedPreferences( SHARED_PREF, MODE_PRIVATE );
+
+                //sharedPreferences.edit().putString( KEY_NAME, "evneet" ).apply();
+
+                //read from shared preferences
+
+                //String name = sharedPreferences.getString( KEY_NAME,"Rizul" );
+
+                // Log.i( TAG, "onCreate: " + name );
+
+                //names = new ArrayList<>(  );
+                try {
+                    names = (ArrayList) ObjectSerializer.deserialize( sharedPreferences.getString( KEY_NAME, ObjectSerializer.serialize( new ArrayList<>(  ) ) ) );
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                final ChangeCategoriesAdapter categoriesAdapter = new ChangeCategoriesAdapter(context);
+                categoriesAdapter.setCategoriesList( names );
+                recyclerViewChangeFolder.setAdapter(categoriesAdapter);
+                categoriesAdapter.setNoteToChange( currNote );
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+                recyclerViewChangeFolder.setLayoutManager(layoutManager);
+                categoriesAdapter.notifyDataSetChanged();
+
+
+
+                Button buttonChangeFolder = v1.findViewById( R.id.button_changefolder );
+
+                buttonChangeFolder.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+
+                        alertDialog1.dismiss();
+
+
+
+                    }
+                } );
+                return true;
+            }
+        } );
+
 
 //        holder.mycardview.setOnClickListener(new View.OnClickListener() {
 //            @Override
