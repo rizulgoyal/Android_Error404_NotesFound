@@ -71,6 +71,7 @@
                     android:layout_gravity="top|end"
                     android:id="@+id/removeImageBtn"
                     android:src="@drawable/stop"
+                    android:visibility="gone"
                     android:background="@android:color/transparent"
                     />
 
@@ -102,7 +103,7 @@
             >
 
             <LinearLayout
-                android:layout_width="290dp"
+                android:layout_width="240dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@android:color/transparent"

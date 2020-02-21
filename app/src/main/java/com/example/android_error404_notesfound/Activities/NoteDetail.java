@@ -162,7 +162,13 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction(android.content.Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(notes.getImagePath()));
+                if(notes.getImagePath()!=null) {
+                    intent.setData( Uri.parse( notes.getImagePath() ) );
+                }
+                else
+                {
+                    intent.setData( Uri.parse( imagePath ) );
+                }
                     startActivity(intent);
             }
         });
@@ -186,6 +192,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
             {
                 try {
                     imagevieww.setVisibility(View.VISIBLE);
+                    removeImg.setVisibility( View.VISIBLE );
                     imageView.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(notes.getImagePath())));
                     imagePath = notes.getImagePath();
                 }catch (IOException ioe)
@@ -210,6 +217,7 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 imagevieww.setVisibility(View.GONE);
+                removeAudio.setVisibility( View.GONE );
                 imagePath = null;
                 notes.setImagePath(imagePath);
             }
