@@ -90,8 +90,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide();
+        getSupportActionBar().setTitle("Add New Note");
         setContentView( R.layout.activity_add_note );
         requestPermission();
 

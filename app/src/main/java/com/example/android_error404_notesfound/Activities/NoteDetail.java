@@ -52,11 +52,12 @@ public class NoteDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide();
+        //requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+
         setContentView(R.layout.activity_note_detail);
 
         notes =  getIntent().getParcelableExtra("data");
+        getSupportActionBar().setTitle(notes.getTitle());
 
         showMap = findViewById( R.id.mapButton );
         showMap.setOnClickListener( new View.OnClickListener() {

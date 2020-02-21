@@ -68,8 +68,8 @@ public class NotesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide();
+        //requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
+
         setContentView( R.layout.activity_notes );
 
         search = findViewById(R.id.editSearch );
@@ -98,6 +98,7 @@ public class NotesActivity extends AppCompatActivity {
 
 
         currCategory = getIntent().getStringExtra( "category" );
+        getSupportActionBar().setTitle(currCategory);
 
         addnote = findViewById( R.id.add_note );
         addnote.setOnClickListener( new View.OnClickListener() {
