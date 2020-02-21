@@ -194,6 +194,8 @@ public class NotesActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
     private void SortNotes(final String sortby)
