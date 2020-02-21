@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_NAME = "key";
 
     ArrayList<String> names;
+    Boolean checkCategory = false;
 
     ImageButton addCategory;
     SharedPreferences sharedPreferences;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (names.isEmpty())
         {
-            names = new ArrayList<>( Arrays.asList( "Home", "Work", "College" ) );
+            //names = new ArrayList<>( Arrays.asList( "Home", "Work", "College" ) );
 //        sharedPreferences.edit().putStringSet( "array", new HashSet<String>( names ) ).apply();
 //
 //
@@ -131,27 +133,65 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        checkCategory = false;
 
-                        names.add( textCategory.getText().toString() );
-
-                        try {
-                            sharedPreferences.edit().putString(KEY_NAME, ObjectSerializer.serialize( names ) ).apply();
-                        }
-                        catch (IOException e)
+                        for(String category : names)
                         {
-                            e.printStackTrace();
+                            if(category.equalsIgnoreCase( textCategory.getText().toString() ))
+                            {
+
+                                androidx.appcompat.app.AlertDialog.Builder builder1 = new androidx.appcompat.app.AlertDialog.Builder( v.getContext() );
+                                builder1.setMessage( "Already added this category" );
+                                builder1.setCancelable( true );
+
+
+                                builder1.setNegativeButton(
+                                        "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+
+                                                // alert11.dismiss();
+
+                                            }
+                                        } );
+
+                                final androidx.appcompat.app.AlertDialog alert11 = builder1.create();
+
+
+                                alert11.show();
+                                checkCategory = true;
+
+                            }
                         }
 
+                        if(!checkCategory) {
+                            names.add( textCategory.getText().toString() );
+                            sharedPreferences.edit().clear();
+                            try {
+                                sharedPreferences.edit().putString( KEY_NAME, ObjectSerializer.serialize( names ) ).apply();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
-                        RecyclerView recyclerView = findViewById(R.id.recyclerCategories);
-                        final CategoriesAdapter categoriesAdapter = new CategoriesAdapter(v.getContext());
-                        categoriesAdapter.setCategoriesList( names );
-                        recyclerView.setAdapter(categoriesAdapter);
-                        categoriesAdapter.notifyDataSetChanged();
+                            names.clear();
 
-                        alertDialog.dismiss();
+                            try {
+                                names = (ArrayList) ObjectSerializer.deserialize( sharedPreferences.getString( KEY_NAME, ObjectSerializer.serialize( new ArrayList<>() ) ) );
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
 
+                            RecyclerView recyclerView = findViewById( R.id.recyclerCategories );
+                            final CategoriesAdapter categoriesAdapter = new CategoriesAdapter( v.getContext() );
+                            categoriesAdapter.setCategoriesList( names );
+                            recyclerView.setAdapter( categoriesAdapter );
+                            categoriesAdapter.notifyDataSetChanged();
+
+                            alertDialog.dismiss();
+
+                        }
 
                     }
                 } );
@@ -167,6 +207,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    public void setrecagain() {
+
+        names.clear();
+
+        try {
+            names = (ArrayList) ObjectSerializer.deserialize( sharedPreferences.getString( KEY_NAME, ObjectSerializer.serialize( new ArrayList<>(  ) ) ) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerCategories);
+        final CategoriesAdapter categoriesAdapter = new CategoriesAdapter(MainActivity.this);
+        categoriesAdapter.setCategoriesList( names );
+        recyclerView.setAdapter(categoriesAdapter);
+        categoriesAdapter.notifyDataSetChanged();
+
 
     }
 }

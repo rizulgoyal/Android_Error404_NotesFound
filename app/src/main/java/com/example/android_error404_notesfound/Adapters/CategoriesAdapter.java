@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_error404_notesfound.Activities.MainActivity;
 import com.example.android_error404_notesfound.Activities.NotesActivity;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.ModelClasses.ObjectSerializer;
@@ -136,21 +137,31 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     public void deleteItem(int position) {
 
 
+        //String category = categoriesList.get(position);
 
-        String category = categoriesList.get(position);
-        categoriesList.remove( category );
+        if(categoriesList.isEmpty())
+        {
+            try {
+                categoriesList = (ArrayList) ObjectSerializer.deserialize( sharedPreferences.getString( KEY_NAME, ObjectSerializer.serialize( new ArrayList<>(  ) ) ) );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        categoriesList.remove( position );
 
         sharedPreferences = context.getSharedPreferences( SHARED_PREF, MODE_PRIVATE );
-
+        sharedPreferences.edit().clear();
         try {
             sharedPreferences.edit().putString( KEY_NAME, ObjectSerializer.serialize( categoriesList ) ).apply();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         Toast.makeText(getContext(),"Category Deleted",Toast.LENGTH_SHORT).show();
-        notifyItemChanged(position);
-        notifyDataSetChanged();
-        notifyItemChanged( position );
+
+        ((MainActivity)context).setrecagain();
+
 
     }
 }

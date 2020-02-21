@@ -1,8 +1,12 @@
 package com.example.android_error404_notesfound.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +35,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android_error404_notesfound.Adapters.NotesAdapter;
 import com.example.android_error404_notesfound.ModelClasses.Notes;
 import com.example.android_error404_notesfound.R;
 import com.example.android_error404_notesfound.RoomDatabase.NotesDB;
@@ -40,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class NoteDetail extends AppCompatActivity implements View.OnClickListener {
 
@@ -215,21 +221,33 @@ public class NoteDetail extends AppCompatActivity implements View.OnClickListene
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titlestr = title.getText().toString();
+//                String titlestr = title.getText().toString();
+//
+//                //Toast.makeText(getApplicationContext(),titlestr,Toast.LENGTH_SHORT).show();
+//                String descstr = desc.getText().toString();
+//                Calendar calendar = Calendar.getInstance();
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "YYY MM dd hh:mm:ss" );
+//                fileName = simpleDateFormat.format(calendar.getTime());
+//
+//                notes.setDateModified(fileName);
+//                notes.setTitle(titlestr);
+//                notes.setDescription(descstr);
+//                notes.setAudioPath(audioPath);
+//                notes.setImagePath(imagePath);
+//                NotesDB notesDB = NotesDB.getInstance(getApplicationContext());
+//                notesDB.daoObjct().update(notes);
+                NotesDB userDatabase = NotesDB.getInstance(v.getContext());
 
-                //Toast.makeText(getApplicationContext(),titlestr,Toast.LENGTH_SHORT).show();
-                String descstr = desc.getText().toString();
-                Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "YYY MM dd hh:mm:ss" );
-                fileName = simpleDateFormat.format(calendar.getTime());
+                userDatabase.daoObjct().delete(notes);
+                Toast.makeText(v.getContext(),"Deleted",Toast.LENGTH_SHORT).show();
 
-                notes.setDateModified(fileName);
-                notes.setTitle(titlestr);
-                notes.setDescription(descstr);
-                notes.setAudioPath(audioPath);
-                notes.setImagePath(imagePath);
-                NotesDB notesDB = NotesDB.getInstance(getApplicationContext());
-                notesDB.daoObjct().update(notes);
+                //notifyItemChanged(position);
+                //RecyclerView recyclerView = findViewById(R.id.recyclerNotes);
+                NotesAdapter notesAdapter = new NotesAdapter(v.getContext());
+
+                notesAdapter.notifyDataSetChanged();
+
+
                 finish();
             }
         });
