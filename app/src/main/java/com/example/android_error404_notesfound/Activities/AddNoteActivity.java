@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +67,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     ImageButton buttonaddnote;
 
     //audio recording and playing
-    private ImageButton play, record,addPic,removeAudio;
+    private ImageButton play, record,addPic,removeAudio,removeImg;
     //Button stop;
     private MediaRecorder myAudioRecorder;
     private String outputFile,fileName,noteDate;
@@ -76,6 +77,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     SeekBar seekBar;
 
     MediaPlayer mediaPlayer;
+    LinearLayout imagevieww;
 
     private final int REQUEST_CODE = 1;
 
@@ -113,6 +115,21 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         play.setOnClickListener(this);
         //stop.setOnClickListener(this);
         record.setOnClickListener(this);
+
+        removeImg = findViewById(R.id.removeImageBtn);
+        imagevieww = findViewById(R.id.imageVieww);
+
+
+        removeImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagevieww.setVisibility(View.GONE);
+                imagePath = null;
+            }
+        });
+
+
+
 
         //stop.setEnabled(false);
         play.setEnabled(false);
@@ -160,8 +177,10 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "YYY MM dd hh:mm:ss" );
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat( "YYY/MM/dd hh:mm" );
         fileName = simpleDateFormat.format(calendar.getTime());
-        noteDate = fileName;
+        noteDate = simpleDateFormat1.format(calendar.getTime());
+        //noteDate = fileName;
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() +"/"+fileName.replaceAll(":","")+".3gp";
         Log.d("path",outputFile);
         myAudioRecorder = new MediaRecorder();
@@ -197,6 +216,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
                 String titleString = title.getText().toString();
                 String descString = desc.getText().toString();
+
 
                 Notes notes = new Notes( latitude, longitude, noteDate, titleString, descString , currCategory);
 
@@ -420,6 +440,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.addPic:
+
                 selectImage(this);
 
 
@@ -464,6 +485,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         imageView.setImageBitmap(selectedImage);
                         imagePath = getImageUri(this,selectedImage);
+                        imagevieww.setVisibility(View.VISIBLE);
 
                     }
 
@@ -482,6 +504,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                                 String picturePath = cursor.getString(columnIndex);
                                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 imagePath = getImageUri(this,BitmapFactory.decodeFile(picturePath));
+                                imagevieww.setVisibility(View.VISIBLE);
                                 cursor.close();
                             }
                         }

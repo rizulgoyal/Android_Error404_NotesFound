@@ -1,70 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.NotesActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <EditText
-            android:padding="10dp"
-            android:layout_margin="10dp"
+            android:id="@+id/editSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:hint="Search Notes"
+            android:padding="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/editSearch"
-            ></EditText>
+            android:textColor="@color/colorPrimary"></EditText>
 
         <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recyclerNotes"
-            ></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent">
 
 
-        <ImageButton
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerNotes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
 
-            android:layout_gravity="bottom"
-            android:layout_marginHorizontal="350dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/add_note"
-            android:src="@drawable/ic_action_add"
-            android:background="@drawable/roundedcorner">
-
-
-        </ImageButton>
 
             <ImageButton
 
-                android:layout_gravity="bottom|left"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="20dp"
+                android:id="@+id/add_note"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/sort_button"
-                android:src="@drawable/ic_action_sort"
-                android:background="@drawable/roundedcorner">
+                android:layout_gravity="bottom|right"
+                android:layout_margin="20dp"
+                android:background="@drawable/roundedcorner"
+                android:src="@drawable/ic_action_add">
 
 
             </ImageButton>
-    </FrameLayout>
+
+            <ImageButton
+
+                android:id="@+id/sort_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|left"
+                android:layout_margin="20dp"
+                android:background="@drawable/roundedcorner"
+                android:src="@drawable/ic_action_sort">
+
+
+            </ImageButton>
+        </FrameLayout>
 
     </LinearLayout>
 
 
-
-</RelativeLayout>
+</LinearLayout>

@@ -20,9 +20,9 @@
 
        <ImageButton
 
-           android:layout_gravity="bottom"
-           android:layout_marginHorizontal="350dp"
-           android:layout_marginBottom="20dp"
+           android:layout_gravity="bottom|right"
+           android:layout_margin="10dp"
+
            android:layout_width="50dp"
            android:layout_height="50dp"
            android:id="@+id/add_category"
@@ -32,8 +32,8 @@
 
        </ImageButton>
     </FrameLayout>
-    
-    
+
+
 
 
 </RelativeLayout>

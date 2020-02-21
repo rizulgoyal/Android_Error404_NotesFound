@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/background"
+
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,18 +23,18 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:textColorHint="@color/text"
+                android:textColorHint="@color/colorPrimary"
                 android:layout_marginTop="30dp"
                 android:id="@+id/titleNote"
                 android:hint="Title"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                android:textColor="@color/text"
+                android:textColor="@color/colorPrimary"
                 />
 
             <EditText
                 android:id="@+id/descriptionNote"
-                android:textColorHint="@color/text"
+                android:textColorHint="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -44,13 +44,53 @@
                 android:hint="Description"
                 android:padding="10dp"
                 android:textSize="15dp"
-                android:textColor="@color/text"/>
-
-
+                android:textColor="@color/colorPrimary"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="end"
                 android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="end"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/dateC"
+                        android:layout_gravity="end"
+                        android:textSize="10dp"
+                        android:textColor="@color/quantum_grey100"
+                        android:text="Date Created : "
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/dateM"
+                        android:textSize="10dp"
+                        android:layout_gravity="end"
+                        android:textColor="@color/quantum_grey100"
+                        android:text="Date Modified : "
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:id="@+id/imagev"
+                android:visibility="gone"
+
                 >
 
             <ImageView
@@ -61,6 +101,15 @@
 
 
                 />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:id="@+id/removeImageBtn"
+                    android:src="@drawable/stop"
+                    android:background="@android:color/transparent"
+                    />
             </LinearLayout>
 
         </LinearLayout>
@@ -75,7 +124,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="50dp"
-        android:background="@color/player"
         android:elevation="8dp"
         android:visibility="gone"
         app:cardCornerRadius="15dp"
@@ -86,7 +134,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/player"
             android:orientation="horizontal"
             android:padding="8dp">
 
@@ -175,7 +222,7 @@
     <ImageButton
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_action_map"
+        android:src="@drawable/location"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
         android:layout_gravity="bottom|right"

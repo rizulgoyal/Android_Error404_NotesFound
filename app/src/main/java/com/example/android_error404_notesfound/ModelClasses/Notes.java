@@ -117,7 +117,7 @@ public class Notes implements Parcelable {
         this.lat = lat;
         this.lng = lng;
         this.dateCreated = dateCreated;
-        this.dateModified = "";
+        this.dateModified = null;
         this.title = title;
         this.description = description;
         this.category = category;
