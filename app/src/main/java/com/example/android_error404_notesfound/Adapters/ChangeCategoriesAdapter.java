@@ -95,7 +95,6 @@ public class ChangeCategoriesAdapter extends RecyclerView.Adapter<ChangeCategori
                 NotesDB notesDB = NotesDB.getInstance( context );
                 notesDB.daoObjct().update( noteToChange );
 
-
                 Intent myintent = new Intent(context, MainActivity.class);
 
                 context.startActivity(myintent);

@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/button_changefolder"
-                android:text="Change Folder"
+                android:text="Cancel"
                 android:textColor="@android:color/background_light"
                 android:background="@color/colorPrimary"
                 >

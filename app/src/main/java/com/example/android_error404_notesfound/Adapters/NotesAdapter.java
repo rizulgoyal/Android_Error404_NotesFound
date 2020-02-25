@@ -165,6 +165,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context);
                 recyclerViewChangeFolder.setLayoutManager(layoutManager);
                 categoriesAdapter.notifyDataSetChanged();
+                //alertDialog1.dismiss();
 
 
 
